@@ -38,6 +38,7 @@ namespace TheBookstown.Controllers
             var viewModel = new AuthorsIndexViewModel(items, new PageViewModel(count, page, pageSize),
                 new AuthorsSortViewModel(sortOrder), new AuthorsFilterViewModel(name));
 
+            ViewBag.PageTextField = _dataManager.PagesTextFields.GetPageTextFieldByCodeWord("Authors");
             return View(viewModel);
         }
     }
