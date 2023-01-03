@@ -1,5 +1,62 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model AuthorsIndexViewModel
 @{
+    PageTextField pageTextField = ViewBag.PageTextField;
+    ViewBag.Title = pageTextField.Name;
 }
+
+<div>
+    <h1>@pageTextField.Name</h1>
+    <div>
+        <h2>Search by authors</h2>
+        <div>
+            <form method="get">
+                <label>Name:</label>
+                <input id="name" name="name" value="@Model.FilterViewModel.SelectedName" />
+                <input type="submit" value="Find" />
+            </form>
+        </div>
+        @if (User.Identity!.IsAuthenticated && User.IsInRole("admin"))
+        {
+            <div>
+                <a asp-area="Admin" asp-controller="Authors" asp-action="Edit" asp-route-id="">Add a new author</a>
+            </div>
+        }
+        <div>
+            <table class="table table-borderless">
+                <tr>
+                    <th>
+                        <a asp-area=""
+                           asp-action="Index"
+                           asp-route-sortOrder="@(Model.SortViewModel.NameSort)"
+                           asp-route-name="@(Model.FilterViewModel.SelectedName)">
+                           Name
+                       </a>
+                    </th>
+                    <th>
+                        <a asp-area=""
+                           asp-action="Index"
+                           asp-route-name="@(Model.FilterViewModel.SelectedName)">
+                           Birth date
+                       </a>
+                    </th>
+                </tr>
+                @foreach (Author entity in Model.Authors)
+                {
+                    <tr>
+                        <td><a asp-area="" asp-controller="Authors" asp-action="Index" asp-route-id="@entity.Id">@entity.Name</a></td>
+                        <td>@entity.BirthDate</td>
+                        @if (User.Identity!.IsAuthenticated && User.IsInRole("admin"))
+                        {
+                            <td><a asp-area="Admin" asp-controller="Authors" asp-action="Edit" asp-route-id="@entity.Id">Edit</a></td>
+                            <td>
+                                <form asp-area="Admin" asp-controller="Authors" asp-action="Delete" asp-route-id="@entity.Id">
+                                    <input type="submit" value="Delete">
+                                </form>
+                            </td>
+                        }
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+</div>
