@@ -20,7 +20,7 @@ namespace TheBookstown.TagHelpers
         [ViewContext]
         [HtmlAttributeNotBound]
         public ViewContext ViewContext { get; set; } = null!;
-        public PageViewModel? PageViewModel { get; set; }
+        public PageViewModel? PageModel { get; set; }
         public string? PageAction { get; set; } = "";
 
         [HtmlAttributeName(DictionaryAttributePrefix = "page-url-")]
@@ -28,26 +28,26 @@ namespace TheBookstown.TagHelpers
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
-            if (PageViewModel == null) throw new Exception("PageViewModel is not set");
+            if (PageModel == null) throw new Exception("PageModel is not set");
             IUrlHelper urlHelper = _urlHelperFactory.GetUrlHelper(ViewContext);
             output.TagName = "div";
 
             TagBuilder tag = new TagBuilder("ul");
             tag.AddCssClass("pagination");
 
-            TagBuilder currentItem = CreateTag(PageViewModel.PageNumber, urlHelper);
+            TagBuilder currentItem = CreateTag(PageModel.PageNumber, urlHelper);
 
-            if (PageViewModel.HasPreviousPage)
+            if (PageModel.HasPreviousPage)
             {
-                TagBuilder prevItem = CreateTag(PageViewModel.PageNumber - 1, urlHelper);
+                TagBuilder prevItem = CreateTag(PageModel.PageNumber - 1, urlHelper);
                 tag.InnerHtml.AppendHtml(prevItem);
             }
 
             tag.InnerHtml.AppendHtml(currentItem);
 
-            if (PageViewModel.HasNextPage)
+            if (PageModel.HasNextPage)
             {
-                TagBuilder nextItem = CreateTag(PageViewModel.PageNumber + 1, urlHelper);
+                TagBuilder nextItem = CreateTag(PageModel.PageNumber + 1, urlHelper);
                 tag.InnerHtml.AppendHtml(nextItem);
             }
 
@@ -59,7 +59,7 @@ namespace TheBookstown.TagHelpers
             TagBuilder item = new TagBuilder("li");
             TagBuilder link = new TagBuilder("a");
 
-            if (pageNumber == PageViewModel!.PageNumber)
+            if (pageNumber == PageModel!.PageNumber)
             {
                 item.AddCssClass("active");
             }
