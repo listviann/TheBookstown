@@ -1,8 +1,105 @@
-﻿@{
+﻿@model BooksIndexViewModel
+@{
     PageTextField pageTextField = ViewBag.PageTextField;
     ViewBag.Title = pageTextField.Name;
 }
 
 <div>
-    
+    <h1>@pageTextField.Name</h1>
+    <div>
+        <h2>Search by title, genre or author</h2>
+        <div>
+            <form method="get">
+                <label>Title: </label>
+                <input id="bookName" name="bookName" value="@(Model.FilterViewModel.SelectedBookName)" />
+                <label>Genre: </label>
+                <select id="genres" name="genres" asp-items="Model.FilterViewModel.Genres"></select>
+                <label>Author: </label>
+                <input id="authorName" name="authorName" value="@(Model.FilterViewModel.SelectedAuthorName)" />
+                <input type="submit" value="Find" />
+            </form>
+        </div>
+        <table class="table table-borderless">
+            <tr>
+                <th>
+                    <a asp-area=""
+                       asp-controller="Home"
+                        asp-action="Index"
+                        asp-route-bookName="@(Model.FilterViewModel.SelectedBookName)"
+                        asp-route-authorName="@(Model.FilterViewModel.SelectedAuthorName)"
+                        asp-route-genre="@(Model.FilterViewModel.SelectedGenre)"
+                        asp-route-sortOrder="@(Model.SortViewModel.NameSort)">
+                        Name
+                    </a>
+                </th>
+                <th>
+                    <a asp-area=""
+                       asp-controller="Home"
+                       asp-action="Index"
+                       asp-route-bookName="@(Model.FilterViewModel.SelectedBookName)"
+                       asp-route-authorName="@(Model.FilterViewModel.SelectedAuthorName)"
+                       asp-route-genre="@(Model.FilterViewModel.SelectedGenre)">
+                        Author
+                    </a>
+                </th>
+                <th>
+                    <a asp-area=""
+                       asp-controller="Home"
+                       asp-action="Index"
+                       asp-route-bookName="@(Model.FilterViewModel.SelectedBookName)"
+                       asp-route-authorName="@(Model.FilterViewModel.SelectedAuthorName)"
+                       asp-route-genre="@(Model.FilterViewModel.SelectedGenre)"
+                       asp-route-sortOrder="@(Model.SortViewModel.PriceSort)">
+                        Price
+                    </a>
+                </th>
+                <th>
+                    <a asp-area=""
+                       asp-controller="Home"
+                       asp-action="Index"
+                       asp-route-bookName="@(Model.FilterViewModel.SelectedBookName)"
+                       asp-route-authorName="@(Model.FilterViewModel.SelectedAuthorName)"
+                       asp-route-genre="@(Model.FilterViewModel.SelectedGenre)">
+                        Genre
+                    </a>
+                </th>
+            </tr>
+            @foreach (var item in Model.Books)
+            {
+                <tr>
+                    <td><a asp-area="" asp-controller="Home" asp-action="Index" asp-route-id="@item.BookId">@item.BookName</a></td>
+                    <td>@item.BookAuthorName</td>
+                    <td>@item.BookPrice</td>
+                    <td>@item.BookGenreName</td>
+                    @if (User.Identity!.IsAuthenticated && User.IsInRole("admin"))
+                    {
+                        <td>
+                            <a asp-area="Admin" asp-controller="Books" asp-action="Edit" asp-route-id="@item.BookId">Edit</a>
+                        </td>
+                        <td>
+                            <form asp-area="Admin" asp-controller="Books" asp-action="Delete" asp-route-id="@item.BookId">
+                                <input type="submit" value="Delete">
+                            </form>
+                        </td>
+                    }
+                    @if (User.Identity!.IsAuthenticated && User.IsInRole("oridnary"))
+                    {
+                        <td>
+                            <form asp-area="User" asp-controller="UserCart" asp-action="Add" asp-route-bookId="@item.BookId">
+                                <input type="submit" value="Add to cart">
+                            </form>
+                        </td>
+                    }
+                    @if (!User.Identity!.IsAuthenticated)
+                    {
+                        <td>
+                            <form asp-area="" asp-controller="SessionCart" asp-action="AddToCart" asp-route-id="@item.BookId" method="post">
+                                <input type="submit" value="Add to cart">
+                            </form>
+                        </td>
+                    }
+                </tr>
+            }
+        </table>
+    </div>
 </div>
