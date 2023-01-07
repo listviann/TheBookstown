@@ -101,5 +101,11 @@
                 </tr>
             }
         </table>
+        <page-link page-model="Model.PageViewModel"
+                   page-action="Index"
+                   page-url-bookName="@(Model.FilterViewModel.SelectedBookName)"
+                   page-url-authorName="@(Model.FilterViewModel.SelectedAuthorName)"
+                   page-url-genre="@(Model.FilterViewModel.SelectedGenre)"
+                   page-url-sortOrder="@(Model.SortViewModel.Current)"></page-link>
     </div>
 </div>
