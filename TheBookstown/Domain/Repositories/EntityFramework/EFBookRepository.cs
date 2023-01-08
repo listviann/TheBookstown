@@ -26,7 +26,7 @@ namespace TheBookstown.Domain.Repositories.EntityFramework
 
         public IQueryable<Book> GetBooks()
         {
-            return _db.Books;
+            return _db.Books.Include(b => b.Author).Include(b => b.Genre);
         }
 
         public List<BookViewModel> GetBooksModels()
