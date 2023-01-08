@@ -9,6 +9,7 @@ namespace TheBookstown.Domain.Entities
         [Display(Name = "Author's name")]
         public override string? Name { get; set; }
 
+        [Required]
         public DateTime BirthDate { get; set; }
         public List<Book> Books { get; set; } = new();
     }
