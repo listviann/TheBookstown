@@ -23,6 +23,19 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+                        @if (!User.IsInRole("admin"))
+                        {
+                            <li class="nav-item">
+                                @if (User.Identity!.IsAuthenticated && User.IsInRole("ordinary"))
+                                {
+                                    <a class="nav-link text-dark" asp-area="User" asp-controller="UserCart" asp-action="Index">Cart</a>
+                                }
+                                @if (!User.Identity.IsAuthenticated)
+                                {
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="SessionCart" asp-action="Index">Cart</a>
+                                }
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
