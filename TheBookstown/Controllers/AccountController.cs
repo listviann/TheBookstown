@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using TheBookstown.Areas.User.Controllers;
 using TheBookstown.Models;
 using TheBookstown.Service;
 
@@ -18,6 +19,17 @@ namespace TheBookstown.Controllers
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
+        }
+
+        [AllowAnonymous]
+        public IActionResult Index()
+        {
+            if (User.Identity!.IsAuthenticated && User.IsInRole("ordinary"))
+            {
+                return RedirectToAction(nameof(UserProfileController.Index), nameof(UserProfileController).CutController(), new { area = "User" });
+            }
+
+            return View();
         }
 
         [AllowAnonymous]
