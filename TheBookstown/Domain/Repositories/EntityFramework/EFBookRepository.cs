@@ -37,6 +37,7 @@ namespace TheBookstown.Domain.Repositories.EntityFramework
                 BookName = b.Name,
                 BookAuthorName = b.Author!.Name,
                 BookGenreName = b.Genre!.Name,
+                BookGenreId = b.Genre!.Id,
                 BookPrice = b.Price
             }).ToList();
         }
