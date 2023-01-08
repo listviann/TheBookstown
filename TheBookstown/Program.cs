@@ -20,6 +20,11 @@ builder.Services.AddTransient<IUserCartRepository, EFUserCartRepository>();
 builder.Services.AddTransient<IPageTextFieldRepository, EFPageTextFieldRepository>();
 builder.Services.AddTransient<DataManager>();
 
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+});
+
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(Config.ConnectionString));
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
@@ -61,8 +66,8 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseSession();
 app.UseStaticFiles();
-
 app.UseRouting();
 app.UseCookiePolicy();
 app.UseAuthentication();
