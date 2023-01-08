@@ -3,6 +3,7 @@
     public class BookViewModel
     {
         public Guid BookId { get; set; }
+        public Guid BookGenreId { get; set; }
         public string? BookName { get; set; }
         public string? BookAuthorName { get; set; }
         public int BookPrice { get; set; }
