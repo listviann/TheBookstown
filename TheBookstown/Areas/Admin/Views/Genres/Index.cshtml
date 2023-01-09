@@ -1,5 +1,52 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model GenresIndexViewModel
 @{
+    string strTitle = "Genres";
+    ViewBag.Title = strTitle;
 }
+
+<div>
+    <h1>@strTitle</h1>
+    <div>
+        <h2>Search by genre name</h2>
+        <div>
+            <form method="get">
+                <label>Name: </label>
+                <input id="genreName" name="genreName" value="@Model.FilterViewModel.SelectedName" />
+                <input type="submit" value="Find" />
+            </form>
+        </div>
+        <div>
+            <a asp-area="Admin" asp-controller="Genres" asp-action="Edit" asp-route-id="">Add a new genre</a>
+        </div>
+        <div>
+            <table class="table table-borderless">
+                <tr>
+                    <th>
+                        <a asp-area="Admin"
+                           asp-controller="Genres"
+                           asp-action="Index"
+                           asp-route-sortOrder="@(Model.SortViewModel.NameSort)"
+                           asp-route-genreName="@(Model.FilterViewModel.SelectedName)">
+                           Name
+                       </a>
+                    </th>
+                </tr>
+                @foreach (var item in Model.Genres)
+                {
+                    <tr>
+                        <td>@item.Name</td>
+                        <td><a asp-area="Admin" asp-controller="Genres" asp-action="Edit" asp-route-id="@item.Id">Edit</a></td>
+                        <td>
+                            <form asp-area="Admin" asp-controller="Genres" asp-action="Delete" asp-route-id="@item.Id" method="post">
+                                <input type="submit" value="Delete">
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </table>
+            <page-link page-model="Model.PageViewModel" page-action="Index"
+                       page-url-genreName="@(Model.FilterViewModel.SelectedName)"
+                       page-url-sortOrder="@(Model.SortViewModel.Current)"></page-link>
+        </div>
+    </div>
+</div>
