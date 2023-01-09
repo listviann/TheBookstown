@@ -1,5 +1,60 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model PTFIndexViewModel
 @{
+    string strTitle = "Pages data";
+    ViewBag.Title = strTitle;
 }
+
+<div>
+    <h1>@strTitle</h1>
+    <div>
+        <h2>Search by title or code word</h2>
+        <div>
+            <form method="get">
+                <label>Title: </label>
+                <input id="pageTitle" name="pageTitle" value="@(Model.FilterViewModel.SelectedTitle)" />
+                <label>Code word: </label>
+                <input id="codeWord" name="codeWord" value="@(Model.FilterViewModel.SelectedCodeWord)" />
+                <input type="submit" value="Find" />
+            </form>
+        </div>
+        <div>
+            <table class="table table-borderless">
+                <tr>
+                    <th>
+                        <a asp-area="Admin" 
+                           asp-controller="PagesTextFields" 
+                           asp-action="Index" 
+                           asp-route-pageTitle="@(Model.FilterViewModel.SelectedTitle)"
+                           asp-route-codeWord="@(Model.FilterViewModel.SelectedCodeWord)"
+                           asp-route-sortOrder="@(Model.SortViewModel.CodeWordSort)">
+                           Code word
+                       </a>
+                    </th>
+                    <th>
+                        <a asp-area="Admin"
+                           asp-controller="PagesTextFields"
+                           asp-action="Index"
+                           asp-route-pageTitle="@(Model.FilterViewModel.SelectedTitle)"
+                           asp-route-codeWord="@(Model.FilterViewModel.SelectedCodeWord)"
+                           asp-route-sortOrder="@(Model.SortViewModel.TitleSort)">
+                           Title
+                       </a>
+                    </th>
+                </tr>
+                @foreach (var item in Model.PagesTextFields)
+                {
+                    <tr>
+                        <td>@item.CodeWord</td>
+                        <td>@item.Name</td>
+                        <td><a asp-area="Admin" asp-controller="PagesTextFields" asp-action="Edit" asp-route-id="@item.Id">Edit</a></td>
+                    </tr>
+                }
+            </table>
+            <page-link page-model="Model.PageViewModel" 
+                       page-action="Index"
+                       page-url-pageTitle="@(Model.FilterViewModel.SelectedTitle)"
+                       page-url-codeWord="@(Model.FilterViewModel.SelectedCodeWord)"
+                       page-url-sortOrder="@(Model.SortViewModel.Current)"></page-link>
+        </div>
+    </div>
+</div>
