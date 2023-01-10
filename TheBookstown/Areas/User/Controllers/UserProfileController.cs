@@ -81,7 +81,7 @@ namespace TheBookstown.Areas.User.Controllers
             var result = await _userManager.DeleteAsync(user);
             if (result.Succeeded)
             {
-                return RedirectToAction(nameof(TheBookstown.Controllers.HomeController.Index), nameof(TheBookstown.Controllers.HomeController).CutController());
+                return RedirectToAction(nameof(TheBookstown.Controllers.HomeController.Index), nameof(TheBookstown.Controllers.HomeController).CutController(), new { area = "" });
             }
 
             return RedirectToAction(nameof(UserProfileController.Index), nameof(UserProfileController).CutController());
