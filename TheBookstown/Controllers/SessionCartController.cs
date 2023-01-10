@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TheBookstown.Areas.Admin.Controllers;
+using TheBookstown.Areas.User.Controllers;
 using TheBookstown.Domain;
 using TheBookstown.Models;
 using TheBookstown.Service;
@@ -17,6 +18,8 @@ namespace TheBookstown.Controllers
 
         public IActionResult AddToCart(Guid id)
         {
+            if (User.Identity!.IsAuthenticated) return BadRequest();
+
             var books = _dataManager.Books.GetBooksModels();
 
             if (SessionHelper.GetObjectFromJson<List<SessionCartViewModel>>(HttpContext.Session, "sessionCart") == null)
@@ -49,12 +52,21 @@ namespace TheBookstown.Controllers
 
         public IActionResult Index()
         {
+            if (User.Identity!.IsAuthenticated && User.IsInRole("ordinary"))
+            {
+                return RedirectToAction(nameof(UserCartController.Index), nameof(UserCartController).CutController(), new { area = "User" });
+            }
+
+            if (User.Identity!.IsAuthenticated && User.IsInRole("admin")) return BadRequest();
+
             var cart = SessionHelper.GetObjectFromJson<List<SessionCartViewModel>>(HttpContext.Session, "sessionCart");
             return View(cart);
         }
 
         public IActionResult Remove(Guid id)
         {
+            if (User.Identity!.IsAuthenticated) return BadRequest();
+
             List<SessionCartViewModel> cart = SessionHelper.GetObjectFromJson<List<SessionCartViewModel>>(HttpContext.Session, "sessionCart");
             int index = IsExist(id);
             cart.RemoveAt(index);
