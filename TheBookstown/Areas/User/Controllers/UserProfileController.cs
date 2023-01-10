@@ -24,9 +24,8 @@ namespace TheBookstown.Areas.User.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var userName = User.FindFirstValue(ClaimTypes.Name);
 
-            ViewBag.userId = new Guid(userId!);
+            ViewBag.userId = new Guid(userId);
             ViewBag.userName = userName;
-            ViewBag.userId = userId;
             return View();
         }
 
@@ -64,7 +63,7 @@ namespace TheBookstown.Areas.User.Controllers
             {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 var user = await _userManager.FindByIdAsync(userId);
-                var result = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassowrd);
+                var result = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
                 return RedirectToAction(nameof(UserProfileController.Index), nameof(UserProfileController).CutController());
             }
 
