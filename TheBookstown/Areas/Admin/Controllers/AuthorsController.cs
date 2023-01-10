@@ -27,7 +27,7 @@ namespace TheBookstown.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 _dataManager.Authors.Save(entity);
-                return RedirectToAction(nameof(TheBookstown.Controllers.AuthorsController.Index), nameof(TheBookstown.Controllers.AuthorsController).CutController());
+                return RedirectToAction(nameof(TheBookstown.Controllers.AuthorsController.Index), nameof(TheBookstown.Controllers.AuthorsController).CutController(), new { area = "" });
             }
 
             return View(entity);
@@ -37,7 +37,7 @@ namespace TheBookstown.Areas.Admin.Controllers
         public IActionResult Delete(Guid id)
         {
             _dataManager.Authors.Delete(id);
-            return RedirectToAction(nameof(TheBookstown.Controllers.AuthorsController.Index), nameof(TheBookstown.Controllers.AuthorsController).CutController());
+            return RedirectToAction(nameof(TheBookstown.Controllers.AuthorsController.Index), nameof(TheBookstown.Controllers.AuthorsController).CutController(), new { area = "" });
         }
     }
 }

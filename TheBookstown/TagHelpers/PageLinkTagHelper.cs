@@ -21,7 +21,7 @@ namespace TheBookstown.TagHelpers
         [HtmlAttributeNotBound]
         public ViewContext ViewContext { get; set; } = null!;
         public PageViewModel? PageModel { get; set; }
-        public string? PageAction { get; set; } = "";
+        public string PageAction { get; set; } = "";
 
         [HtmlAttributeName(DictionaryAttributePrefix = "page-url-")]
         public Dictionary<string, object> PageUrlValues { get; set; } = new();
@@ -70,8 +70,8 @@ namespace TheBookstown.TagHelpers
             }
 
             item.AddCssClass("page-item");
-            item.AddCssClass("page-link");
-            item.InnerHtml.Append(pageNumber.ToString());
+            link.AddCssClass("page-link");
+            link.InnerHtml.Append(pageNumber.ToString());
             item.InnerHtml.AppendHtml(link);
             return item;
         }
