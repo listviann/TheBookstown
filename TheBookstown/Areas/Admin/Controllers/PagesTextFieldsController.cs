@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TheBookstown.Areas.Admin.Models;
 using TheBookstown.Domain;
 using TheBookstown.Domain.Entities;
 using TheBookstown.Service;
+using TheBookstown.Models;
 
 namespace TheBookstown.Areas.Admin.Controllers
 {
@@ -15,6 +17,7 @@ namespace TheBookstown.Areas.Admin.Controllers
             _dataManager = dataManager;
         }
 
+        [HttpGet]
         public IActionResult Edit(string codeWord)
         {
             var entity = _dataManager.PagesTextFields.GetPageTextFieldByCodeWord(codeWord);
@@ -33,9 +36,38 @@ namespace TheBookstown.Areas.Admin.Controllers
             return View(entity);
         }
 
-        public IActionResult Index()
+        public IActionResult Index(Guid id, string pageTitle, string codeWord, int page = 1, PTFSortState sortOrder = PTFSortState.CodeWordAsc)
         {
-            return View(_dataManager.PagesTextFields.GetPageTextFields());
+            int pageSize = 3;
+            IQueryable<PageTextField> pageTextFields = _dataManager.PagesTextFields.GetPageTextFields();
+            
+            if (!string.IsNullOrWhiteSpace(codeWord))
+            {
+                pageTextFields = pageTextFields.Where(p => p.CodeWord!.Contains(codeWord));
+            }
+
+            if (!string.IsNullOrWhiteSpace(pageTitle))
+            {
+                pageTextFields = pageTextFields.Where(p => p.Name!.Contains(pageTitle));
+            }
+
+            pageTextFields = sortOrder switch
+            {
+                PTFSortState.CodeWordDesc => pageTextFields.OrderByDescending(p => p.CodeWord),
+                PTFSortState.TitleAsc => pageTextFields.OrderBy(p => p.Name),
+                PTFSortState.TitleDesc => pageTextFields.OrderByDescending(p => p.Name),
+                _ => pageTextFields.OrderBy(p => p.CodeWord)
+            };
+
+            var count = pageTextFields.Count();
+            var items = pageTextFields.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            var viewModel = new PTFIndexViewModel(items,
+                new PageViewModel(count, page, pageSize),
+                new PTFSortViewModel(sortOrder),
+                new PTFFilterViewModel(pageTitle, codeWord));
+
+            return View(viewModel);
         }
     }
 }

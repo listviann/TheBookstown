@@ -46,7 +46,7 @@
                     <tr>
                         <td>@item.CodeWord</td>
                         <td>@item.Name</td>
-                        <td><a asp-area="Admin" asp-controller="PagesTextFields" asp-action="Edit" asp-route-id="@item.Id">Edit</a></td>
+                        <td><a asp-area="Admin" asp-controller="PagesTextFields" asp-action="Edit" asp-route-codeWord="@item.CodeWord">Edit</a></td>
                     </tr>
                 }
             </table>
