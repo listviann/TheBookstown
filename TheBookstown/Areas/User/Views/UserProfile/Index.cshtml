@@ -1,14 +1,13 @@
 ﻿@{
     string userName = ViewBag.userName;
     ViewBag.Title = userName;
-    string userId = ViewBag.userId;
 }
 
 <div>
     <h1>@userName</h1>
-    <h2>@userId</h2>
+    <h2>@ViewBag.userId</h2>
     <div>
-        <p><a asp-area="User" asp-controller="UserProfile" asp-action="Edit">Edit profile</a></p>
+        <p><a asp-area="User" asp-controller="UserProfile" asp-action="Edit" asp-route-id="@ViewBag.userId">Edit profile</a></p>
         <p><a asp-area="User" asp-controller="Orders" asp-action="Index">Orders history</a></p>
     </div>
     <div>
