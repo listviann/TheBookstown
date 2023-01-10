@@ -31,7 +31,7 @@
                 @foreach (var item in Model.Users)
                 {
                     <tr>
-                        <td>@item.Id</td>
+                        <td><a asp-area="Admin" asp-controller="Users" asp-action="Index" asp-route-id="@item.Id">@item.Id</a></td>
                         <td>@item.UserName</td>
                         <td>
                             <form asp-area="Admin" asp-controller="Genres" asp-action="Delete" asp-route-id="@item.Id" method="post">
