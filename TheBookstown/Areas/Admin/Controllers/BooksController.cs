@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using TheBookstown.Domain;
 using TheBookstown.Domain.Entities;
 using TheBookstown.Service;
@@ -17,6 +18,12 @@ namespace TheBookstown.Areas.Admin.Controllers
 
         public IActionResult Edit(Guid id)
         {
+            List<Author> authors = _dataManager.Authors.GetAuthors().ToList();
+            List<Genre> genres = _dataManager.Genres.GetGenres().ToList();
+
+            ViewBag.Authors = new SelectList(authors, "Id", "Name");
+            ViewBag.Genres = new SelectList(genres, "Id", "Name");
+
             var entity = id == default ? new Book() : _dataManager.Books.GetBookById(id);
             return View(entity);
         }
