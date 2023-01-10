@@ -1,5 +1,30 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model EditProfileViewModel
 @{
+    string strTitle = "Edit profile";
+    ViewBag.Title = strTitle;
 }
+
+<div>
+    <h1>@strTitle</h1>
+    <div>
+        <form asp-area="User" asp-controller="UserProfile" asp-action="Edit" method="post">
+            <div asp-validation-summary="All"></div>
+            <div>
+                <label asp-for="UserName"></label><br />
+                <input asp-for="UserName" />
+                <span asp-validation-for="UserName"></span>
+            </div>
+            <div>
+                <input type="submit" value="Save" />
+            </div>
+        </form>
+    </div>
+    <div>
+        <p><a asp-area="User" asp-controller="UserProfile" asp-action="ChangePassword">Change password</a></p>
+    </div>
+    <div>
+        <form asp-area="User" asp-controller="UserProfile" asp-action="DeleteAccount" method="post">
+            <input type="submit" value="Delete account" />
+        </form>
+    </div>
+</div>

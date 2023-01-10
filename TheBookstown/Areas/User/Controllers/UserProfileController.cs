@@ -24,8 +24,9 @@ namespace TheBookstown.Areas.User.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var userName = User.FindFirstValue(ClaimTypes.Name);
 
-            ViewBag.userId = new Guid(userId);
+            ViewBag.userId = new Guid(userId!);
             ViewBag.userName = userName;
+            ViewBag.userId = userId;
             return View();
         }
 
@@ -43,7 +44,7 @@ namespace TheBookstown.Areas.User.Controllers
 
             if (ModelState.IsValid)
             {
-                user.UserName = model.UserName;
+                user!.UserName = model.UserName;
                 var result = await _userManager.UpdateAsync(user);
                 return RedirectToAction(nameof(UserProfileController.Index), nameof(UserProfileController).CutController());
             }
