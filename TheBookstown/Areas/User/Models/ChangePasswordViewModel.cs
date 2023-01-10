@@ -16,7 +16,7 @@ namespace TheBookstown.Areas.User.Models
         [Required]
         [UIHint("Passowrd")]
         [Display(Name = "New password")]
-        public string? NewPassowrd { get; set; }
+        public string? NewPassword { get; set; }
 
         [Required]
         [UIHint("Password")]
