@@ -5,6 +5,7 @@ using System.Security.Claims;
 using TheBookstown.Areas.User.Controllers;
 using TheBookstown.Models;
 using TheBookstown.Service;
+using TheBookstown.Areas.Admin.Controllers;
 
 namespace TheBookstown.Controllers
 {
@@ -27,6 +28,10 @@ namespace TheBookstown.Controllers
             if (User.Identity!.IsAuthenticated && User.IsInRole("ordinary"))
             {
                 return RedirectToAction(nameof(UserProfileController.Index), nameof(UserProfileController).CutController(), new { area = "User" });
+            }
+            if (User.Identity!.IsAuthenticated && User.IsInRole("admin"))
+            {
+                return RedirectToAction(nameof(HomeController.Index), nameof(HomeController).CutController(), new { area = "admin" });
             }
 
             return View();
