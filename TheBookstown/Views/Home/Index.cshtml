@@ -19,6 +19,12 @@
                 <input type="submit" value="Find" />
             </form>
         </div>
+        @if (User.Identity!.IsAuthenticated && User.IsInRole("admin"))
+        {
+            <div>
+                <a asp-area="Admin" asp-controller="Books" asp-action="Edit" asp-route-id="">Add a new book</a>
+            </div>
+        }
         <table class="table table-borderless">
             <tr>
                 <th>
