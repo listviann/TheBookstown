@@ -88,10 +88,10 @@
                             </form>
                         </td>
                     }
-                    @if (User.Identity!.IsAuthenticated && User.IsInRole("oridnary"))
+                    @if (User.Identity!.IsAuthenticated && User.IsInRole("ordinary"))
                     {
                         <td>
-                            <form asp-area="User" asp-controller="UserCart" asp-action="Add" asp-route-bookId="@item.BookId">
+                            <form asp-area="User" asp-controller="UserCart" asp-action="Add" asp-route-bookId="@item.BookId" method="post">
                                 <input type="submit" value="Add to cart">
                             </form>
                         </td>
