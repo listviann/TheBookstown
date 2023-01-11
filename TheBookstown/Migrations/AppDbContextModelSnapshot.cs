@@ -283,7 +283,7 @@ namespace TheBookstown.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Authors");
+                    b.ToTable("Authors", (string)null);
                 });
 
             modelBuilder.Entity("TheBookstown.Domain.Entities.Book", b =>
@@ -315,7 +315,7 @@ namespace TheBookstown.Migrations
 
                     b.HasIndex("GenreId");
 
-                    b.ToTable("Books");
+                    b.ToTable("Books", (string)null);
                 });
 
             modelBuilder.Entity("TheBookstown.Domain.Entities.Genre", b =>
@@ -337,7 +337,7 @@ namespace TheBookstown.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Genres");
+                    b.ToTable("Genres", (string)null);
                 });
 
             modelBuilder.Entity("TheBookstown.Domain.Entities.OrderItem", b =>
@@ -360,7 +360,7 @@ namespace TheBookstown.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("OrderItems");
+                    b.ToTable("OrderItems", (string)null);
                 });
 
             modelBuilder.Entity("TheBookstown.Domain.Entities.PageTextField", b =>
@@ -382,7 +382,7 @@ namespace TheBookstown.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PagesTextFields");
+                    b.ToTable("PagesTextFields", (string)null);
 
                     b.HasData(
                         new
@@ -449,7 +449,7 @@ namespace TheBookstown.Migrations
 
                     b.HasIndex("OrderItemId");
 
-                    b.ToTable("UserCartItems");
+                    b.ToTable("UserCartItems", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
