@@ -16,7 +16,7 @@ namespace TheBookstown.Domain.Repositories.EntityFramework
         public void Delete(Guid id)
         {
             UserCartItem cartItem = new() { Id = id };
-            _db.UserCartItems.Remove(cartItem);
+            _db.Entry(cartItem).State = Microsoft.EntityFrameworkCore.EntityState.Deleted;
             _db.SaveChanges();
         }
 
