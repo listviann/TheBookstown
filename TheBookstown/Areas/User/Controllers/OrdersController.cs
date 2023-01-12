@@ -17,7 +17,9 @@ namespace TheBookstown.Areas.User.Controllers
 
         public IActionResult Index()
         {
-            return View(_dataManager.OrderItems.GetOrdersHistory());
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            ViewBag.PageTextField = _dataManager.PagesTextFields.GetPageTextFieldByCodeWord("Orders");
+            return View(_dataManager.OrderItems.GetOrdersHistory().Where(o => o.UserId == new Guid(userId)));
         }
 
         [HttpPost]
@@ -25,7 +27,7 @@ namespace TheBookstown.Areas.User.Controllers
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             _dataManager.OrderItems.Save(new Guid(userId));
-            return RedirectToAction(nameof(TheBookstown.Controllers.HomeController.Index), nameof(TheBookstown.Controllers.HomeController).CutController());
+            return RedirectToAction(nameof(TheBookstown.Controllers.HomeController.Index), nameof(TheBookstown.Controllers.HomeController).CutController(), new { area = "" });
         }
 
         [HttpPost]
