@@ -161,11 +161,11 @@ namespace TheBookstown.Migrations
                         {
                             Id = "ab0d461e-6966-4e9d-80e5-17e426c9f048",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "7be15b61-0cf0-406c-a559-145bd63a0206",
+                            ConcurrencyStamp = "f9bc5c1c-5ee9-4f94-8419-6a73d992d829",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEJGKRIY5li9121PnZiVhXt05ODJnOKTc0ciMdzRwEXoCiRLjBD4IdE8RvE6v9S0zQg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHYCLBEAMBlRVnM5pL7NfL6eB/86Ts/6kalltuNs8Qi+dPwsa1DPe8WnpKLgIU/VAQ==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -283,7 +283,7 @@ namespace TheBookstown.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Authors", (string)null);
+                    b.ToTable("Authors");
                 });
 
             modelBuilder.Entity("TheBookstown.Domain.Entities.Book", b =>
@@ -315,7 +315,7 @@ namespace TheBookstown.Migrations
 
                     b.HasIndex("GenreId");
 
-                    b.ToTable("Books", (string)null);
+                    b.ToTable("Books");
                 });
 
             modelBuilder.Entity("TheBookstown.Domain.Entities.Genre", b =>
@@ -337,7 +337,40 @@ namespace TheBookstown.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Genres", (string)null);
+                    b.ToTable("Genres");
+                });
+
+            modelBuilder.Entity("TheBookstown.Domain.Entities.OrderDetail", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("BookId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("BookTitle")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateAdded")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookId");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("OrderDetails");
                 });
 
             modelBuilder.Entity("TheBookstown.Domain.Entities.OrderItem", b =>
@@ -360,7 +393,7 @@ namespace TheBookstown.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("OrderItems", (string)null);
+                    b.ToTable("OrderItems");
                 });
 
             modelBuilder.Entity("TheBookstown.Domain.Entities.PageTextField", b =>
@@ -382,42 +415,42 @@ namespace TheBookstown.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PagesTextFields", (string)null);
+                    b.ToTable("PagesTextFields");
 
                     b.HasData(
                         new
                         {
                             Id = new Guid("0d00b1e0-16a9-45de-8cab-ad2725f0dd5c"),
                             CodeWord = "Home",
-                            DateAdded = new DateTime(2023, 1, 1, 1, 30, 41, 502, DateTimeKind.Local).AddTicks(5644),
+                            DateAdded = new DateTime(2023, 1, 18, 19, 37, 6, 829, DateTimeKind.Local).AddTicks(7998),
                             Name = "Books"
                         },
                         new
                         {
                             Id = new Guid("ad27cb7d-7743-430e-8d90-d08f2a957d24"),
                             CodeWord = "Authors",
-                            DateAdded = new DateTime(2023, 1, 1, 1, 30, 41, 502, DateTimeKind.Local).AddTicks(5709),
+                            DateAdded = new DateTime(2023, 1, 18, 19, 37, 6, 829, DateTimeKind.Local).AddTicks(8055),
                             Name = "Authors"
                         },
                         new
                         {
                             Id = new Guid("88c027ca-a133-417d-a41a-c955b78a876a"),
                             CodeWord = "Cart",
-                            DateAdded = new DateTime(2023, 1, 1, 1, 30, 41, 502, DateTimeKind.Local).AddTicks(5724),
+                            DateAdded = new DateTime(2023, 1, 18, 19, 37, 6, 829, DateTimeKind.Local).AddTicks(8069),
                             Name = "Cart"
                         },
                         new
                         {
                             Id = new Guid("5c3d573c-e877-40a5-9d83-6b61f0399704"),
                             CodeWord = "Orders",
-                            DateAdded = new DateTime(2023, 1, 1, 1, 30, 41, 502, DateTimeKind.Local).AddTicks(5739),
+                            DateAdded = new DateTime(2023, 1, 18, 19, 37, 6, 829, DateTimeKind.Local).AddTicks(8083),
                             Name = "Orders history"
                         },
                         new
                         {
                             Id = new Guid("c1fc83e1-b1ab-49bf-8105-ca4b62f51a2c"),
                             CodeWord = "Profile",
-                            DateAdded = new DateTime(2023, 1, 1, 1, 30, 41, 502, DateTimeKind.Local).AddTicks(5754),
+                            DateAdded = new DateTime(2023, 1, 18, 19, 37, 6, 829, DateTimeKind.Local).AddTicks(8095),
                             Name = "Profile"
                         });
                 });
@@ -437,9 +470,6 @@ namespace TheBookstown.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("OrderItemId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
@@ -447,9 +477,7 @@ namespace TheBookstown.Migrations
 
                     b.HasIndex("BookId");
 
-                    b.HasIndex("OrderItemId");
-
-                    b.ToTable("UserCartItems", (string)null);
+                    b.ToTable("UserCartItems");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -522,7 +550,7 @@ namespace TheBookstown.Migrations
                     b.Navigation("Genre");
                 });
 
-            modelBuilder.Entity("TheBookstown.Domain.Entities.UserCartItem", b =>
+            modelBuilder.Entity("TheBookstown.Domain.Entities.OrderDetail", b =>
                 {
                     b.HasOne("TheBookstown.Domain.Entities.Book", "Book")
                         .WithMany()
@@ -530,9 +558,24 @@ namespace TheBookstown.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TheBookstown.Domain.Entities.OrderItem", null)
-                        .WithMany("CartItems")
-                        .HasForeignKey("OrderItemId");
+                    b.HasOne("TheBookstown.Domain.Entities.OrderItem", "Order")
+                        .WithMany("OrderDetails")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Book");
+
+                    b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("TheBookstown.Domain.Entities.UserCartItem", b =>
+                {
+                    b.HasOne("TheBookstown.Domain.Entities.Book", "Book")
+                        .WithMany()
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Book");
                 });
@@ -549,7 +592,7 @@ namespace TheBookstown.Migrations
 
             modelBuilder.Entity("TheBookstown.Domain.Entities.OrderItem", b =>
                 {
-                    b.Navigation("CartItems");
+                    b.Navigation("OrderDetails");
                 });
 #pragma warning restore 612, 618
         }
