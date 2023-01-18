@@ -1,4 +1,4 @@
-﻿using Microsoft.DiaSymReader;
+﻿using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using TheBookstown.Domain.Entities;
 using TheBookstown.Domain.Repositories.Abstract;
@@ -15,9 +15,9 @@ namespace TheBookstown.Domain.Repositories.EntityFramework
             _db = db;
         }
 
-        public void ClearOrdersHistory()
+        public void ClearOrdersHistory(Guid userId)
         {
-            foreach (var orderItem in _db.OrderItems)
+            foreach (var orderItem in _db.OrderItems.Where(o => o.UserId == userId))
             {
                 _db.OrderItems.Remove(orderItem);
             }
@@ -25,24 +25,31 @@ namespace TheBookstown.Domain.Repositories.EntityFramework
             _db.SaveChanges();
         }
 
-        public IQueryable<OrderItem> GetOrdersHistory()
+        public IQueryable<OrderItem> GetOrdersHistory(Guid userId)
         {
-            return _db.OrderItems;
+            return _db.OrderItems.Include(o => o.OrderDetails).Where(o => o.UserId == userId);
         }
 
         public void Save(Guid userId)
         {
-            int totalCost = 0;
-            OrderItem order = new() { Id = Guid.NewGuid(), UserId = userId };
-            foreach (var item in _db.UserCartItems.Include(c => c.Book).ToList())
+            OrderItem order = new();
+            order.UserId = userId;
+            _db.OrderItems.Add(order);
+            var cartItems = _db.UserCartItems.Include(c => c.Book);
+            foreach (var item in cartItems)
             {
-                order.CartItems.Add(item);
-                totalCost += item.Book!.Price;
+                var orderDetail = new OrderDetail()
+                {
+                    BookId = item.BookId,
+                    OrderId = order.Id,
+                    BookTitle = item.Book!.Name,
+                    Price = item.Book!.Price,
+                };
+
+                _db.OrderDetails.Add(orderDetail);
             }
 
-            order.TotalCost = totalCost;
-
-            foreach (var cartItem in _db.UserCartItems)
+            foreach (var cartItem in _db.UserCartItems.Where(c => c.UserId == userId))
             {
                 _db.UserCartItems.Remove(cartItem);
             }
