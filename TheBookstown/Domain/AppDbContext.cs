@@ -12,6 +12,7 @@ namespace TheBookstown.Domain
         public DbSet<Genre> Genres { get; set; } = null!;
         public DbSet<UserCartItem> UserCartItems { get; set; } = null!;
         public DbSet<OrderItem> OrderItems { get; set; } = null!;
+        public DbSet<OrderDetail> OrderDetails { get; set; } = null!;
         public DbSet<PageTextField> PagesTextFields { get; set; } = null!;
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
