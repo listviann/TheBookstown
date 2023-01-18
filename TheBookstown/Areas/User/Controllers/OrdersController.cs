@@ -19,7 +19,8 @@ namespace TheBookstown.Areas.User.Controllers
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             ViewBag.PageTextField = _dataManager.PagesTextFields.GetPageTextFieldByCodeWord("Orders");
-            return View(_dataManager.OrderItems.GetOrdersHistory().Where(o => o.UserId == new Guid(userId)));
+            
+            return View(_dataManager.OrderItems.GetOrdersHistory(new Guid(userId!)));
         }
 
         [HttpPost]
@@ -27,15 +28,16 @@ namespace TheBookstown.Areas.User.Controllers
         {
             if (_dataManager.UserCartItems.GetUserCart() == null) return BadRequest();
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            _dataManager.OrderItems.Save(new Guid(userId));
+            _dataManager.OrderItems.Save(new Guid(userId!));
             return RedirectToAction(nameof(TheBookstown.Controllers.HomeController.Index), nameof(TheBookstown.Controllers.HomeController).CutController(), new { area = "" });
         }
 
         [HttpPost]
         public IActionResult ClearHistory()
         {
-            if (_dataManager.OrderItems.GetOrdersHistory() == null) return BadRequest();
-            _dataManager.OrderItems.ClearOrdersHistory();
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (_dataManager.OrderItems.GetOrdersHistory(new Guid(userId!)) == null) return BadRequest();
+            _dataManager.OrderItems.ClearOrdersHistory(new Guid(userId!));
             return RedirectToAction(nameof(OrdersController.Index), nameof(OrdersController).CutController());
         }
     }
