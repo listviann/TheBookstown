@@ -5,7 +5,7 @@ namespace TheBookstown.Domain.Repositories.Abstract
     public interface IOrderItemRepository
     {
         void Save(Guid userId);
-        IQueryable<OrderItem> GetOrdersHistory();
-        void ClearOrdersHistory();
+        IQueryable<OrderItem> GetOrdersHistory(Guid userId);
+        void ClearOrdersHistory(Guid userId);
     }
 }
